@@ -1,11 +1,17 @@
 const express = require("express");
 const fetch = require("node-fetch");
-const cors = require("cors"); // 👈 NEW LINE
+const cors = require("cors");
 const app = express();
 
 require("dotenv").config();
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
+const corsOptions = {
+  origin: "https://dukefuqua.yul1.qualtrics.com",
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.post("/chatgpt", async (req, res) => {
