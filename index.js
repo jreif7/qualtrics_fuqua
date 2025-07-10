@@ -1,14 +1,14 @@
 const express = require("express");
 const fetch = require("node-fetch");
 const cors = require("cors");
-const app = express();
-
 require("dotenv").config();
+
+const app = express();
 
 const corsOptions = {
   origin: "https://dukefuqua.yul1.qualtrics.com",
   methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type"],
+  allowedHeaders: ["Content-Type"]
 };
 
 app.use(cors(corsOptions));
@@ -16,9 +16,14 @@ app.use(express.json());
 
 app.post("/chatgpt", async (req, res) => {
   const { prompt } = req.body;
+  const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
+  if (!OPENAI_API_KEY) {
+    return res.status(500).json({ error: "Missing OpenAI API key." });
+  }
 
   if (!prompt) {
-    return res.status(400).json({ error: "No prompt provided" });
+    return res.status(400).json({ error: "No prompt provided." });
   }
 
   try {
@@ -34,17 +39,17 @@ app.post("/chatgpt", async (req, res) => {
       })
     });
 
-const data = await response.json();
-console.log("OpenAI raw response:", data); // 👈 This will show us exactly what OpenAI said
+    const data = await response.json();
+    console.log("OpenAI response:", data);
 
-if (data.choices && data.choices[0]) {
-  res.json({ reply: data.choices[0].message.content });
-} else {
-  res.status(500).json({ error: data.error || "No response from OpenAI" });
-}
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to fetch from OpenAI" });
+    if (data.choices && data.choices[0]) {
+      res.json({ reply: data.choices[0].message.content });
+    } else {
+      res.status(500).json({ error: data.error || "No response from OpenAI." });
+    }
+  } catch (error) {
+    console.error("Error calling OpenAI:", error);
+    res.status(500).json({ error: "Failed to fetch from OpenAI." });
   }
 });
 
