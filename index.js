@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const app = express();
 
+// CORS settings to allow Qualtrics
 const corsOptions = {
   origin: "https://dukefuqua.yul1.qualtrics.com",
   methods: ["GET", "POST", "OPTIONS"],
@@ -15,15 +16,16 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.post("/chatgpt", async (req, res) => {
-  const { prompt } = req.body;
+  const messages = req.body.messages;
+
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
   if (!OPENAI_API_KEY) {
     return res.status(500).json({ error: "Missing OpenAI API key." });
   }
 
-  if (!prompt) {
-    return res.status(400).json({ error: "No prompt provided." });
+  if (!messages || !Array.isArray(messages)) {
+    return res.status(400).json({ error: "Invalid messages format." });
   }
 
   try {
@@ -35,7 +37,7 @@ app.post("/chatgpt", async (req, res) => {
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }]
+        messages: messages
       })
     });
 
