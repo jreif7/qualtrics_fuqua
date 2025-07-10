@@ -1,9 +1,9 @@
 const express = require("express");
 const fetch = require("node-fetch");
+const cors = require("cors"); // 👈 NEW LINE
 const app = express();
 
 require("dotenv").config();
-
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 app.use(express.json());
