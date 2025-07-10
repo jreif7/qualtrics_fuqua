@@ -28,13 +28,14 @@ app.post("/chatgpt", async (req, res) => {
       })
     });
 
-    const data = await response.json();
+const data = await response.json();
+console.log("OpenAI raw response:", data); // 👈 This will show us exactly what OpenAI said
 
-    if (data.choices && data.choices[0]) {
-      res.json({ reply: data.choices[0].message.content });
-    } else {
-      res.status(500).json({ error: "No response from OpenAI" });
-    }
+if (data.choices && data.choices[0]) {
+  res.json({ reply: data.choices[0].message.content });
+} else {
+  res.status(500).json({ error: data.error || "No response from OpenAI" });
+}
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch from OpenAI" });
