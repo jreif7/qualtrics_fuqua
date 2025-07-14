@@ -5,9 +5,9 @@ require("dotenv").config();
 
 const app = express();
 
-// CORS settings to allow Qualtrics
+// ✅ CORS settings to match your live survey domain exactly
 const corsOptions = {
-  origin: "https://dukefuqua.yul1.qualtrics.com",
+  origin: "https://dukefuqua.qualtrics.com", // Use your actual live Qualtrics survey origin
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"]
 };
@@ -17,7 +17,6 @@ app.use(express.json());
 
 app.post("/chatgpt", async (req, res) => {
   const messages = req.body.messages;
-
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
   if (!OPENAI_API_KEY) {
@@ -36,7 +35,7 @@ app.post("/chatgpt", async (req, res) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "gpt-4o",
+        model: "gpt-4o", // using GPT-4o as specified
         messages: messages
       })
     });
