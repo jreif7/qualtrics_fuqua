@@ -7,7 +7,10 @@ const app = express();
 
 // ✅ CORS settings to match your live survey domain exactly
 const corsOptions = {
-  origin: "https://dukefuqua.qualtrics.com", // Use your actual live Qualtrics survey origin
+  origin: [
+    "https://dukefuqua.qualtrics.com",
+    "https://dukefuqua.yul1.qualtrics.com"
+  ],
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"]
 };
