@@ -9,7 +9,9 @@ const app = express();
 const corsOptions = {
   origin: [
     "https://dukefuqua.qualtrics.com",
-    "https://dukefuqua.yul1.qualtrics.com"
+    "https://dukefuqua.yul1.qualtrics.com",
+    "https://wharton.qualtrics.com",
+    "https://wharton.yul1.qualtrics.com"
   ],
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"]
